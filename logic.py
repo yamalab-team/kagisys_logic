@@ -6,6 +6,7 @@ import time
 import signal
 import sys
 import nfc
+import threading
 
 
 class ControlServomotor():
