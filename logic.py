@@ -13,20 +13,22 @@ class ControlServomotor():
 	"""サーボモータの制御"""
 	#スレッドの呼び出し--------------------------------------------------------------
 	def __init__(self):
-		th = threading.Thread(target=self.run, name="th", args=())
-    		th.start()
-
-
-	#メイン-----------------------------------------------------------------------
-	def run(self):
-		#鍵の番号
-		self.key_list = ["0114B405B6116944","01010114DD15E70D"]
-
 		#基本的なセッティング
 		signal.signal(signal.SIGINT, self.exit_handler)
 		GPIO.setmode(GPIO.BCM)
 		GPIO.setup(12, GPIO.OUT)
 		self.toggle = True
+
+		th = threading.Thread(target=self.run, name="th", args=())
+		th.start()
+
+		while True:
+			time.sleep(0.5)
+
+	#メイン-----------------------------------------------------------------------
+	def run(self):
+		#鍵の番号
+		self.key_list = ["0114B405B6116944","01010114DD15E70D"]
 
 		clf = nfc.ContactlessFrontend('usb')
 
@@ -43,6 +45,7 @@ class ControlServomotor():
 	def exit_handler(self,signal, frame):
 		print("\nExit")
 		GPIO.cleanup()
+		th.setDaemon(True):
 		sys.exit(0)
 
 
