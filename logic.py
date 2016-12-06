@@ -14,7 +14,7 @@ class ControlServomotor():
 	#スレッドの呼び出し--------------------------------------------------------------
 	def __init__(self):
 		th = threading.Thread(target=self.run, name="th", args=())
-    	th.start()
+    		th.start()
 
 
 	#メイン-----------------------------------------------------------------------
