@@ -10,6 +10,7 @@ import threading
 
 from config import Config
 from motor import Motor
+from db import DataBase
 
 
 class ControlServomotor():
@@ -19,6 +20,7 @@ class ControlServomotor():
 		#基本的なセッティング
 		config = Config().config
 		self.motor = Motor(config['MOTOR_PIN_NUMBER'])
+		self.db = DataBase()
 		self.toggle = True
 
 		th = threading.Thread(target=self.run, name="th", args=())
@@ -30,8 +32,6 @@ class ControlServomotor():
 
 	#メイン-----------------------------------------------------------------------
 	def run(self):
-		#鍵の番号
-		self.key_list = ["0114B405B6116944","01010114DD15E70D","01010910D815C521"]
 
 		clf = nfc.ContactlessFrontend('usb')
 
@@ -48,7 +48,7 @@ class ControlServomotor():
 		#idの照合
 		tag_id = tag.identifier.encode("hex").upper()
 		print(tag_id)
-		if tag_id not in self.key_list:
+		if self.db.checkIDm(tag_id):
 		    #データが正しいidと異なっていた場合
 			print("No matching Key")
 			return
