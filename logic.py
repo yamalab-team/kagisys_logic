@@ -49,16 +49,16 @@ class ControlServomotor():
 		tag_id = tag.identifier.encode("hex").upper()
 		print(tag_id)
 		if self.db.checkIDm(tag_id):
-		    #データが正しいidと異なっていた場合
+			#データが正しいidと異なっていた場合
 			print("No matching Key")
 			return
 
 		if self.toggle:
-	        #鍵の解錠
+			#鍵の解錠
 			self.motor.open()
 			self.toggle = False
 		else:
-	        #鍵の施錠
+			#鍵の施錠
 			self.motor.close()
 			self.toggle = True
 
