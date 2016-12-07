@@ -8,15 +8,17 @@ import sys
 import nfc
 import threading
 
+from config import Config
+from motor import Motor
+
 
 class ControlServomotor():
 	"""サーボモータの制御"""
 	#スレッドの呼び出し--------------------------------------------------------------
 	def __init__(self):
 		#基本的なセッティング
-		signal.signal(signal.SIGINT, self.exit_handler)
-		GPIO.setmode(GPIO.BCM)
-		GPIO.setup(12, GPIO.OUT)
+		config = Config().config
+		motor = Motor(config['MOTOR_PIN_NUMBER'])
 		self.toggle = True
 
 		th = threading.Thread(target=self.run, name="th", args=())
@@ -41,14 +43,6 @@ class ControlServomotor():
 			time.sleep(3)
 			print("relese")
 
-
-	#終了の際の処理---------------------------------------------------------------
-	def exit_handler(self,signal, frame):
-		print("\nExit")
-		GPIO.cleanup()
-		sys.exit(0)
-
-
 	#タッチされたときの処理-----------------------------------------------------------
 	def touched(self,tag):
 		#idの照合
@@ -59,20 +53,14 @@ class ControlServomotor():
 			print("No matching Key")
 			return
 
-		servo = GPIO.PWM(12, 50)
 		if self.toggle:
 	        #鍵の解錠
-			servo.start(7.7)
-			print("Open")
-			time.sleep(0.5)
+			motor.open()
 			self.toggle = False
 		else:
 	        #鍵の施錠
-			servo.start(2.5)
-			print("Close")
-			time.sleep(0.5)
+			motor.close()
 			self.toggle = True
-		servo.stop()
 
 
 #クラスの呼び出し-------------------------------------------------------------------
