@@ -18,7 +18,7 @@ class ControlServomotor():
 	def __init__(self):
 		#基本的なセッティング
 		config = Config().config
-		motor = Motor(config['MOTOR_PIN_NUMBER'])
+		self.motor = Motor(config['MOTOR_PIN_NUMBER'])
 		self.toggle = True
 
 		th = threading.Thread(target=self.run, name="th", args=())
@@ -55,11 +55,11 @@ class ControlServomotor():
 
 		if self.toggle:
 	        #鍵の解錠
-			motor.open()
+			self.motor.open()
 			self.toggle = False
 		else:
 	        #鍵の施錠
-			motor.close()
+			self.motor.close()
 			self.toggle = True
 
 
