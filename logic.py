@@ -20,15 +20,16 @@ class ControlServomotor():
 		self.toggle = True
 
 		th = threading.Thread(target=self.run, name="th", args=())
+		th.setDaemon(True)
 		th.start()
 
 		while True:
-			time.sleep(0.5)
+			time.sleep(1000)
 
 	#メイン-----------------------------------------------------------------------
 	def run(self):
 		#鍵の番号
-		self.key_list = ["0114B405B6116944","01010114DD15E70D"]
+		self.key_list = ["0114B405B6116944","01010114DD15E70D","01010910D815C521"]
 
 		clf = nfc.ContactlessFrontend('usb')
 
@@ -45,7 +46,6 @@ class ControlServomotor():
 	def exit_handler(self,signal, frame):
 		print("\nExit")
 		GPIO.cleanup()
-		th.setDaemon(True):
 		sys.exit(0)
 
 
