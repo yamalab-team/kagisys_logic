@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import yaml
+import time
 from PyQt4 import QtSql
 
 from config import Config
@@ -39,4 +40,14 @@ class DataBase:
 		query.prepare('insert into nfctag VALUES (:IDm, :account_id)')
 		query.bindValue(':IDm', IDm)
 		query.bindValue(':account_id', account_id)
+		query.exec_()
+
+	def addTouchedLog(self, IDm):
+		now = time.time()
+
+		self.__open()
+		query = QtSql.QSqlQuery()
+		query.prepare('insert into touchedlog VALUES (:IDm, :timestamp)')
+		query.bindValue(':IDm', IDm)
+		query.bindValue(':timestamp', now)
 		query.exec_()

@@ -48,6 +48,7 @@ class ControlServomotor():
 		#idの照合
 		tag_id = tag.identifier.encode("hex").upper()
 		print(tag_id)
+		self.db.addTouchedLog(tag_id)
 		if self.db.checkIDm(tag_id):
 			#データが正しいidと異なっていた場合
 			print("No matching Key")
