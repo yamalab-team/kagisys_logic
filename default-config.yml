@@ -1,0 +1,4 @@
+SQL_HOST_NAME : '192.168.10.38'
+SQL_USER_NAME : 'kagisys'
+SQL_USER_PASSWORD : 'pass'
+SQL_DATABASE_NAME : 'proconzemi'
