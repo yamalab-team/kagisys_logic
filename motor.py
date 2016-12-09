@@ -16,10 +16,10 @@ class Motor:
 		GPIO.cleanup()
 
 	def open(self):
-			servo = GPIO.PWM(12, 50)
-				servo.start(7.7)
-				time.sleep(0.5)
-				toggle = False
+		servo = GPIO.PWM(12, 50)
+		servo.start(7.7)
+		time.sleep(0.5)
+		toggle = False
 		servo.stop()
 
 	def close(self):
