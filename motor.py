@@ -8,14 +8,12 @@ import RPi.GPIO as GPIO
 
 class Motor:
 	def __init__(self, PIN_number):
-		signal.signal(signal.SIGINT, self.exit_handler)
 		GPIO.setmode(GPIO.BCM)
 		GPIO.setup(PIN_number, GPIO.OUT)
 
-	def exit_handler(self, signal, frame):
-		print("\nExit")
+	def exit_handler(self):
+		print("Exit motor")
 		GPIO.cleanup()
-		sys.exit(0)
 
 	def open(self):
 			servo = GPIO.PWM(12, 50)
