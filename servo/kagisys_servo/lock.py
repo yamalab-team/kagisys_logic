@@ -1,0 +1,21 @@
+# -*- coding: utf-8 -*-
+
+"""This lock the door lock."""
+
+
+from model import servo_model
+from model import storage_model
+
+
+def main():
+    """Lock door lock."""
+    servo = servo_model.Servo()
+    servo.lock()
+
+    # update file
+    storage = storage_model.StorageModel()
+    storage.update_file("lock")
+
+
+if __name__ == '__main__':
+    main()
