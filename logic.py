@@ -7,22 +7,20 @@ import signal
 import sys
 import nfc
 import threading
+import os
 
 from config import Config
-from motor import Motor
 from db import DataBase
 
 
-class ControlServomotor():
+class NFC_Kagisys():
 	"""サーボモータの制御"""
-	#スレッドの呼び出し--------------------------------------------------------------
 	def __init__(self):
+		"""基本設定とスレッドの呼び出し"""
 		#基本的なセッティング
 		config = Config().config
-		self.motor = Motor(config['MOTOR_PIN_NUMBER'])
 		self.db = DataBase()
 		signal.signal(signal.SIGINT, self.exit_handler)
-		self.toggle = True
 		th = threading.Thread(target=self.run, name="th", args=())
 		th.setDaemon(True)
 		th.start()
@@ -30,19 +28,16 @@ class ControlServomotor():
 		while True:
 			time.sleep(1000)
 
-	#終了時処理
 	def exit_handler(self, signal, frame):
+		"""終了時処理"""
 		self.motor.exit_handler()
 		print('Exit nfc')
 		self.clf.close()
 		sys.exit(0)
 
-	#メイン-----------------------------------------------------------------------
 	def run(self):
-
+		"""メイン"""
 		self.clf = nfc.ContactlessFrontend('tty:AMA0:pn532')
-
-		print("setting OK.")
 
 		#繰り返し
 		while True:
@@ -50,8 +45,8 @@ class ControlServomotor():
 			time.sleep(3)
 			print("relese")
 
-	#タッチされたときの処理-----------------------------------------------------------
 	def touched(self,tag):
+		"""タッチされたときの処理"""
 		#idの照合
 		tag_id = tag.identifier.encode("hex").upper()
 		print(tag_id)
@@ -59,17 +54,28 @@ class ControlServomotor():
 		if not self.db.checkIDm(tag_id):
 			#データが正しいidと異なっていた場合
 			print("No matching Key")
+			print("setting OK.")
 			return
 
-		if self.toggle:
+		# toggleの受け取り
+		toggle = self.get_toggle()
+
+		if toggle == "lock":
 			#鍵の解錠
-			self.motor.open()
-			self.toggle = False
-		else:
+			os.system("open.sh")
+		elif toggle == "open":
 			#鍵の施錠
-			self.motor.close()
-			self.toggle = True
+			os.system("lock.sh")
+		else:
+			print "error ! please check file path"
+
+	def get_toggle(self):
+		"""toggleデータの取得"""
+		os.chdir("~/project/kagisys_logic/servo/")
+		file_ = open("kagisys.toggle")
+		result = file_.read()
+		return result
 
 
-#クラスの呼び出し-------------------------------------------------------------------
-ControlServomotor()
+if __name__ == '__main__':
+	NFC_Kagisys()
