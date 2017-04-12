@@ -1,1 +1,1 @@
-sudo python ~/project/future_kagisys/servo/kagisys_servo/open.py
+sudo python ~/project/kagisys_logic/servo/kagisys_servo/open.py

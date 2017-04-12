@@ -5,7 +5,7 @@
 This is Storage Model of Kagisys
 """
 
-# import os
+import os
 
 
 class StorageModel():
@@ -14,12 +14,11 @@ class StorageModel():
     def __init__(self):
         """Set file name."""
         self.file_name = "kagisys.toggle"
-        """
-        self.path = ""
-        os.system(
-            "cd " + self.directry + self.file_name
-        )
-        """
+        
+	"""Move directry"""
+        path = "/home/pi/project/kagisys_logic/servo/"
+	os.chdir(path)
+      
 
     def update_file(self, data):
         """Update file to set data."""
