@@ -30,7 +30,6 @@ class NFC_Kagisys():
 
 	def exit_handler(self, signal, frame):
 		"""終了時処理"""
-		self.motor.exit_handler()
 		print('Exit nfc')
 		self.clf.close()
 		sys.exit(0)
@@ -71,7 +70,7 @@ class NFC_Kagisys():
 
 	def get_toggle(self):
 		"""toggleデータの取得"""
-		os.chdir("~/project/kagisys_logic/servo/")
+		os.chdir("/home/pi/project/kagisys_logic/servo/")
 		file_ = open("kagisys.toggle")
 		result = file_.read()
 		return result
