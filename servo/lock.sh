@@ -1,1 +1,1 @@
-sudo python ~/project/kagisys_logic/servo/kagisys_servo/lock.py
+sudo python /home/pi/project/kagisys_logic/servo/kagisys_servo/lock.py
