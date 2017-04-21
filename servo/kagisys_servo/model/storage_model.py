@@ -14,11 +14,10 @@ class StorageModel():
     def __init__(self):
         """Set file name."""
         self.file_name = "kagisys.toggle"
-        
-	"""Move directry"""
+
+        """Move directry"""
         path = "/home/pi/project/neo_kagisys/"
-	os.chdir(path)
-      
+        os.chdir(path)
 
     def update_file(self, data):
         """Update file to set data."""
