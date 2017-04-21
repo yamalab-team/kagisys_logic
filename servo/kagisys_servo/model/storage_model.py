@@ -16,7 +16,7 @@ class StorageModel():
         self.file_name = "kagisys.toggle"
         
 	"""Move directry"""
-        path = "/home/pi/project/kagisys_logic/servo/"
+        path = "/home/pi/project/neo_kagisys/"
 	os.chdir(path)
       
 
