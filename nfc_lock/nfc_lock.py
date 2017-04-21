@@ -72,7 +72,7 @@ class NFC_Kagisys():
 
 	def get_toggle(self):
 		"""toggleデータの取得"""
-		os.chdir("/home/pi/project/kagisys_logic/servo/")
+		os.chdir("/home/pi/project/neo_kagisys/")
 		file_ = open("kagisys.toggle")
 		result = file_.read()
 		file_.close()
@@ -83,7 +83,7 @@ class NFC_Kagisys():
 		"""write not to auth id"""
 		write_string = "not authed : " + id
 
-		os.chdir("/home/pi/project/kagisys_logic/servo/")
+		os.chdir("/home/pi/project/neo_kagisys/")
                 file_ = open('not_auth.log', 'a')		
 		file_.write(write_string)
 		file_.close() 
