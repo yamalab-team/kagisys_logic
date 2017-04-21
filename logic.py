@@ -52,6 +52,8 @@ class NFC_Kagisys():
 		self.db.addTouchedLog(tag_id)
 		if not self.db.checkIDm(tag_id):
 			#データが正しいidと異なっていた場合
+			self.write_not_auth_id(tag_id)
+
 			print("No matching Key")
 			print("setting OK.")
 			return
@@ -73,7 +75,18 @@ class NFC_Kagisys():
 		os.chdir("/home/pi/project/kagisys_logic/servo/")
 		file_ = open("kagisys.toggle")
 		result = file_.read()
+		file_.close()
 		return result
+
+
+	def write_not_auth_id(self,id):
+		"""write not to auth id"""
+		write_string = "not authed : " + id
+
+		os.chdir("/home/pi/project/kagisys_logic/servo/")
+                file_ = open('not_auth.log', 'a')		
+		file_.write(write_string)
+		file_.close() 
 
 
 if __name__ == '__main__':
