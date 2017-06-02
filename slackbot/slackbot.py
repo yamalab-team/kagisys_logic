@@ -40,7 +40,6 @@ def post(text):
             'text': "7407:" + text,         # text
             'username': u'kagisys',         # user name
             'icon_emoji': u':kagi:', 	    # profile emoji
-            'link_names': 0,                # mention
         })
     )
 
@@ -48,7 +47,7 @@ def post(text):
 def get_toggle():
     """Get kagisys toggle data."""
     # move current directry
-    os.chdir("/home/pi/project/neo_kagisys/")
+    os.chdir("/home/pi/project/kagisys_logic/")
 
     # read file
     file_ = open("kagisys.toggle", 'r')
