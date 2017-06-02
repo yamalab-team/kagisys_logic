@@ -63,10 +63,10 @@ class NFC_Kagisys():
 
 		if toggle == "lock":
 			#鍵の解錠
-			os.system("open.sh")
+			os.system("open_kagi")
 		elif toggle == "open":
 			#鍵の施錠
-			os.system("lock.sh")
+			os.system("lock_kagi")
 		else:
 			print "error ! please check file path"
 
