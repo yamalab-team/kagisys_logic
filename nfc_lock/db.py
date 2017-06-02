@@ -1,21 +1,24 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 
+import configparser
 import yaml
 import time
 from PyQt4 import QtSql
 
-from config import Config
 
 class DataBase:
 	def __init__(self):
-		self.config = Config().config
+		# get url from kagisys.conf
+		self.config = configparser.SafeConfigParser()
+		self.config.read('/home/pi/project/kagisys.conf')
+		url = self.config.get('Slack', 'url')
 
 		self.db = QtSql.QSqlDatabase.addDatabase('QMYSQL')
-		self.db.setHostName(self.config['SQL_HOST_NAME'])
-		self.db.setUserName(self.config['SQL_USER_NAME'])
-		self.db.setPassword(self.config['SQL_USER_PASSWORD'])
-		self.db.setDatabaseName(self.config['SQL_DATABASE_NAME'])
+		self.db.setHostName(self.config.get('SQL', 'host_name'))
+		self.db.setUserName(self.config.get('SQL', 'user_name'))
+		self.db.setPassword(self.config.get('SQL', 'user_password'))
+		self.db.setDatabaseName(self.config.get('SQL', 'database_name'))
 
 	def __open(self):
 		if not self.db.open():

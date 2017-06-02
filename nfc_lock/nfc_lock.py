@@ -9,7 +9,6 @@ import nfc
 import threading
 import os
 
-from config import Config
 from db import DataBase
 
 
@@ -18,7 +17,6 @@ class NFC_Kagisys():
 	def __init__(self):
 		"""基本設定とスレッドの呼び出し"""
 		#基本的なセッティング
-		config = Config().config
 		self.db = DataBase()
 		signal.signal(signal.SIGINT, self.exit_handler)
 		th = threading.Thread(target=self.run, name="th", args=())
@@ -72,7 +70,7 @@ class NFC_Kagisys():
 
 	def get_toggle(self):
 		"""toggleデータの取得"""
-		os.chdir("/home/pi/project/neo_kagisys/")
+		os.chdir("/home/pi/project/kagisys_logic/")
 		file_ = open("kagisys.toggle")
 		result = file_.read()
 		file_.close()
@@ -83,7 +81,7 @@ class NFC_Kagisys():
 		"""write not to auth id"""
 		write_string = "not authed : " + id
 
-		os.chdir("/home/pi/project/neo_kagisys/")
+		os.chdir("/home/pi/project/kagisys_logic/")
                 file_ = open('not_auth.log', 'a')		
 		file_.write(write_string)
 		file_.close() 

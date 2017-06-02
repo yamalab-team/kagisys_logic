@@ -5,6 +5,7 @@ import requests
 import json
 import time
 import os
+import configparser
 
 
 def main():
@@ -31,13 +32,18 @@ def main():
 
 def post(text):
     """Post to Slack."""
+    # get url from kagisys.conf
+    config = configparser.SafeConfigParser()
+    config.read('/home/pi/project/kagisys.conf')
+    url = config.get('Slack', 'url')
+   
     requests.post(
         # URL
-        '''url''',
+        url,
 
         # Other Property.
         data=json.dumps({
-            'text': "7407:" + text,         # text
+            'text': u"7205:" + text,        # text
             'username': u'kagisys',         # user name
             'icon_emoji': u':kagi:', 	    # profile emoji
         })
@@ -74,8 +80,6 @@ def check_not_auth():
     return result
 
 		
-
-
 if __name__ == '__main__':
     main()
 
