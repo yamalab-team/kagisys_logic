@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """This Program Start Kagisys System."""
 
 import threading
@@ -17,7 +19,7 @@ def main():
 
 def start_slackbot():
     """Start Slackbot."""
-    path = "/home/pi/project/neo_kagisys/slackbot/"
+    path = "/home/pi/project/kagisys_logic/slackbot/"
     os.chdir(path)
     os.system("sudo python2 slackbot.py")
 
@@ -25,7 +27,7 @@ def start_slackbot():
 def start_nef_lock():
     """Start NFC Lock Sysytem."""
     # Move directry
-    path = "/home/pi/project/neo_kagisys/nfc_lock/"
+    path = "/home/pi/project/kagisys_logic/nfc_lock/"
     os.chdir(path)
     os.system("sudo python2 nfc_lock.py")
 
