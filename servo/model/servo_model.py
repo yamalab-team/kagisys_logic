@@ -28,7 +28,7 @@ class Servo():
         """Open servo moter."""
         # contral servo
         servo = GPIO.PWM(12, 50)
-        servo.start(11.4)
+        servo.start(4.6)
         time.sleep(0.5)
         servo.stop()
 
@@ -36,6 +36,6 @@ class Servo():
         """Lock servo moter."""
         # contral servo
         servo = GPIO.PWM(12, 50)
-        servo.start(6.8)
+        servo.start(9)
         time.sleep(0.5)
         servo.stop()
