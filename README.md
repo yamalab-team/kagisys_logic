@@ -3,7 +3,8 @@
 
 ## ソフト側の使い方
 ### 1. モータに関するソースを`/usr/local/bin`に追加
-```shell
+モータに関するソースを`/usr/local/bin`にコピー。
+```shell:
 cp -rp /servo /usr/local/bin
 ```
 
@@ -16,7 +17,7 @@ cd $filepath
 ```
 
 ### 3. kagisys.configを書く
-../kagisys.config
+../kagisys.configには以下のように書く。
 ```
 [SQL]
 host_name=ip
@@ -28,4 +29,8 @@ database_name=name
 url=url
 ```
 
-### 4. reboot
+### 4. 再起動
+再起動する
+```shell
+sudo reboot
+```
