@@ -63,16 +63,16 @@ class NFC_Kagisys():
 
 		if toggle == "lock":
 			#鍵の解錠
-			os.system("open.sh")
+			os.system("open_kagi")
 		elif toggle == "open":
 			#鍵の施錠
-			os.system("lock.sh")
+			os.system("lock_kagi")
 		else:
 			print "error ! please check file path"
 
 	def get_toggle(self):
 		"""toggleデータの取得"""
-		os.chdir("/home/pi/project/kagisys_logic/servo/")
+		os.chdir("/home/pi/project/neo_kagisys/")
 		file_ = open("kagisys.toggle")
 		result = file_.read()
 		file_.close()
@@ -83,7 +83,7 @@ class NFC_Kagisys():
 		"""write not to auth id"""
 		write_string = "not authed : " + id
 
-		os.chdir("/home/pi/project/kagisys_logic/servo/")
+		os.chdir("/home/pi/project/neo_kagisys/")
                 file_ = open('not_auth.log', 'a')		
 		file_.write(write_string)
 		file_.close() 

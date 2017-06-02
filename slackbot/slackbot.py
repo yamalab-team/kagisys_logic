@@ -48,7 +48,7 @@ def post(text):
 def get_toggle():
     """Get kagisys toggle data."""
     # move current directry
-    os.chdir("/home/pi/project/kagisys_logic/servo/")
+    os.chdir("/home/pi/project/neo_kagisys/")
 
     # read file
     file_ = open("kagisys.toggle", 'r')
@@ -60,7 +60,7 @@ def get_toggle():
 def check_not_auth():
     """check and post slack not to auth id"""
     # move current directry
-    os.chdir("/home/pi/project/kagisys_logic/servo/")
+    os.chdir("/home/pi/project/kagisys_logic/")
 
     # read file
     read_file = open("not_auth.log","r")
