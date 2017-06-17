@@ -5,7 +5,7 @@
 ### 1. モータに関するソースを`/usr/local/bin`に追加
 モータに関するソースを`/usr/local/bin`にコピー。
 ```shell:
-cp -rp /servo /usr/local/bin
+cp -rp ./servo /usr/local/bin
 ```
 
 ### 2. 自動起動設定をする（`rc.local`にコードの追加）
