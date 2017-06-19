@@ -35,7 +35,7 @@ def post(text):
     # get url from kagisys.conf
     config = configparser.SafeConfigParser()
     config.read('/home/pi/project/kagisys.conf')
-    url = config.get('Slack', 'url')
+    url = config.get('KagisysInfo', 'url')
    
     requests.post(
         # URL
