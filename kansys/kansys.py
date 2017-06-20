@@ -6,7 +6,7 @@ import configparser
 from slacker import Slacker
 
 import time
-
+import os
 
 class Kansys():
     '''Kansys用クラス'''
@@ -17,39 +17,56 @@ class Kansys():
         config.read('/home/pi/project/kagisys.conf')
 
         # gpio
-        self.pin = config.get('Kansys', 'gpio-pin')
-        GPIO.setup()
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.pin, GPIO.IN)
+        self.output_pin = config.get('Kansys', 'output-pin')
+        self.input_pin = config.get('Kansys', 'input-pin')
+	self.output_pin = int(self.output_pin)
+	self.input_pin = int(self.input_pin)
 
         # slack
-        token = config.get('Kansys', 'slack-url')
-        self.channel_id = config.get('Kansys', 'channel_id')
-        self.channel_name = config.get('Kansys', 'channel_name')
+        token = config.get('Kansys', 'token')
+        self.channel = config.get('Kansys', 'channel')
 
         self.slack = Slacker(token)
 
-    def run(self):
-        while True:
-            status = GPIO.input(self.pin)
-            if(status):
-                time.sleep(1)
-                self.take_picture()
-                self.send_to_slack()
+    def setup(self):
+	'''GPIOイベントのセット'''
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setup(self.output_pin, GPIO.OUT)
+	GPIO.output(self.output_pin,1)
+
+	GPIO.setup(self.input_pin,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
+	GPIO.add_event_detect(self.input_pin, GPIO.RISING)
+	GPIO.add_event_callback(self.input_pin, self.opened_door)
+
+    def opened_door(self, event_gpio):
+	'''ドアが空いたときの処理'''
+	if(self.get_toggle() == 'lock'):
+	    time.sleep(2)
+	    self.take_picture()
+	    self.send_to_slack()
+	    time.sleep(5)
 
     def send_to_slack(self):
-        '''ファイルの送信＆ピン止め'''
-        result = self.slack.files.upload(
-            './picture.jpg',
-            channels=[self.channel_id]
-        )
-        self.slack.pins.add(
-            channel=self.channel_id,
-            file_=result.body['file']['id']
-        )
-
-    def take_picture():
+        '''ファイルの送信'''
+	self.slack.files.upload('photo.jpg',filename="photo.jpg",channels=self.channel)
+    def take_picture(self):
         '''写真を取ってファイルの保存'''
         camera = cv2.VideoCapture(0)
         r, img = camera.read()
-        cv2.imwrite('picture.jpg', img)
+        cv2.imwrite('photo.jpg', img)
+
+    def get_toggle(self):
+	'''toggleデータの取得'''
+	os.chdir("/home/pi/project/kagisys_logic/")
+	file_ = open("kagisys.toggle")
+	result = file_.read()
+	file_.close()
+	return result
+
+
+if __name__ == '__main__':
+    kansys = Kansys()
+    kansys.setup()
+	
+    while True:
+	time.sleep(1)	

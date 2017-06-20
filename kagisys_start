@@ -8,23 +8,32 @@ import os
 
 def main():
     """Main."""
-    # run slack bot
-    th_slack = threading.Thread(target=start_slackbot, name="slackbot", args=())
-    th_slack.start()
+    # run kagisys-info slack bot
+    th_kagisys_info = threading.Thread(target=start_kagisys_info, name="kagisys_info", args=())
+    th_kagisys_info.start()
 
+    # run kansys
+    th_kansys = threading.Thread(target=start_kansys, name="kansys", args=())
+    th_kansys.start()
+    
     # run nfc lock
-    th_nfc_lock = threading.Thread(target=start_nef_lock, name="nfc_lock", args=())
+    th_nfc_lock = threading.Thread(target=start_nfc_lock, name="nfc_lock", args=())
     th_nfc_lock.start()
 
 
-def start_slackbot():
-    """Start Slackbot."""
-    path = "/home/pi/project/kagisys_logic/slackbot/"
+def start_kagisys_info():
+    """Start KagisysInfo Slackbot."""
+    path = "/home/pi/project/kagisys_logic/kagisys_info/"
     os.chdir(path)
     os.system("sudo python2 slackbot.py")
 
+def start_kansys():
+    """Start Kansys System."""
+    path = "/home/pi/project/kagisys_logic/kansys/"
+    os.chdir(path)
+    os.system("sudo python2 kansys.py")
 
-def start_nef_lock():
+def start_nfc_lock():
     """Start NFC Lock Sysytem."""
     # Move directry
     path = "/home/pi/project/kagisys_logic/nfc_lock/"
