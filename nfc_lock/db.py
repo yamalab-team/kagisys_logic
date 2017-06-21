@@ -12,7 +12,6 @@ class DataBase:
 		# get url from kagisys.conf
 		self.config = configparser.SafeConfigParser()
 		self.config.read('/home/pi/project/kagisys.conf')
-		url = self.config.get('Slack', 'url')
 
 		self.db = QtSql.QSqlDatabase.addDatabase('QMYSQL')
 		self.db.setHostName(self.config.get('SQL', 'host_name'))

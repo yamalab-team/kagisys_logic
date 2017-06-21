@@ -25,20 +25,18 @@ def start_kagisys_info():
     """Start KagisysInfo Slackbot."""
     path = "/home/pi/project/kagisys_logic/kagisys_info/"
     os.chdir(path)
-    os.system("sudo python2 slackbot.py")
+    os.system("sudo python2 " + path + "slackbot.py")
 
 def start_kansys():
     """Start Kansys System."""
     path = "/home/pi/project/kagisys_logic/kansys/"
-    os.chdir(path)
-    os.system("sudo python2 kansys.py")
+    os.system("sudo python2 " + path + "kansys.py")
 
 def start_nfc_lock():
     """Start NFC Lock Sysytem."""
     # Move directry
     path = "/home/pi/project/kagisys_logic/nfc_lock/"
-    os.chdir(path)
-    os.system("sudo python2 nfc_lock.py")
+    os.system("sudo python2 " + path + "nfc_lock.py")
 
 
 if __name__ == '__main__':

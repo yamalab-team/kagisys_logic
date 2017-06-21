@@ -48,9 +48,12 @@ class Kansys():
 
     def send_to_slack(self):
         '''ファイルの送信'''
+	os.chdir("/home/pi/project/")
 	self.slack.files.upload('photo.jpg',filename="photo.jpg",channels=self.channel)
+
     def take_picture(self):
         '''写真を取ってファイルの保存'''
+	os.chdir("/home/pi/project/")
         camera = cv2.VideoCapture(0)
         r, img = camera.read()
         cv2.imwrite('photo.jpg', img)
