@@ -34,20 +34,21 @@ def post(text):
     """Post to Slack."""
     # get url from kagisys.conf
     config = configparser.SafeConfigParser()
-    config.read('/home/pi/project/kagisys.conf')
+    config.read('/home/pi/project/kagisys_logic/kagisys.conf')
     url = config.get('Slack', 'url')
-   
-    requests.post(
+    print(url)
+    res = requests.post(
         # URL
         url,
 
         # Other Property.
         data=json.dumps({
-            'text': u"7205:" + text,        # text
-            'username': u'kagisys',         # user name
-            'icon_emoji': u':kagi:', 	    # profile emoji
+            'text': u"7505:" + text,
+            'username': u'kagisys',
+            'icon_emoji': u':kagi:'
         })
     )
+    print(res.text)
 
 
 def get_toggle():

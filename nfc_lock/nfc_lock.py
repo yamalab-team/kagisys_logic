@@ -8,6 +8,7 @@ import sys
 import nfc
 import threading
 import os
+import binascii
 
 from db import DataBase
 
@@ -15,6 +16,8 @@ from db import DataBase
 class NFC_Kagisys():
 	"""サーボモータの制御"""
 	def __init__(self):
+		self.BUTTON_ON=19
+		self.BUTTON_OFF=26
 		"""基本設定とスレッドの呼び出し"""
 		#基本的なセッティング
 		self.db = DataBase()
@@ -22,6 +25,11 @@ class NFC_Kagisys():
 		th = threading.Thread(target=self.run, name="th", args=())
 		th.setDaemon(True)
 		th.start()
+		GPIO.setmode(GPIO.BCM)
+		GPIO.setup(self.BUTTON_ON, GPIO.IN)
+		GPIO.setup(self.BUTTON_OFF, GPIO.IN)
+		GPIO.add_event_detect(self.BUTTON_ON, GPIO.FALLING, callback=self.pushed_on, bouncetime=3000)
+		GPIO.add_event_detect(self.BUTTON_OFF, GPIO.FALLING, callback=self.pushed_off, bouncetime=3000)
 
 		while True:
 			time.sleep(1000)
@@ -30,22 +38,30 @@ class NFC_Kagisys():
 		"""終了時処理"""
 		print('Exit nfc')
 		self.clf.close()
+		GPIO.cleanup()
 		sys.exit(0)
 
 	def run(self):
 		"""メイン"""
 		self.clf = nfc.ContactlessFrontend('tty:AMA0:pn532')
-
+		target_req = nfc.clf.RemoteTarget("212F")
+                target_req.sensf_req = bytearray.fromhex("0000030000")
 		#繰り返し
 		while True:
-			self.clf.connect(rdwr={'on-connect': self.touched,'interval': 0.01})
-			time.sleep(3)
-			print("relese")
+			target_res = self.clf.sense(target_req,iterations=10,interval=0.01)
+                	if target_res != None:
+                    		tag = nfc.tag.activate(self.clf,target_res)
+                    		tag.sys = 3
+				idm = binascii.hexlify(tag.idm)
+                    		self.touched(idm)
+				time.sleep(3)
+				print("relese")
 
 	def touched(self,tag):
 		"""タッチされたときの処理"""
 		#idの照合
-		tag_id = tag.identifier.encode("hex").upper()
+		#tag_id = tag.identifier.encode("hex").upper()
+		tag_id=tag
 		print(tag_id)
 		self.db.addTouchedLog(tag_id)
 		if not self.db.checkIDm(tag_id):
@@ -68,12 +84,25 @@ class NFC_Kagisys():
 		else:
 			print "error ! please check file path"
 
+	def pushed_on(self, sw):
+		toggle = self.get_toggle()
+		if toggle == "lock":
+                        #鍵の解錠
+                        os.system("open_kagi")
+
+	def pushed_off(self, sw):
+		toggle = self.get_toggle()
+                if toggle == "open":
+                        #鍵の施錠
+                        os.system("lock_kagi")
+
 	def get_toggle(self):
 		"""toggleデータの取得"""
 		os.chdir("/home/pi/project/kagisys_logic/")
 		file_ = open("kagisys.toggle")
 		result = file_.read()
 		file_.close()
+		print(result)
 		return result
 
 

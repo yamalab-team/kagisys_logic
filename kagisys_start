@@ -16,12 +16,14 @@ def main():
     th_nfc_lock = threading.Thread(target=start_nef_lock, name="nfc_lock", args=())
     th_nfc_lock.start()
 
+    th_register_server = threading.Thread(target=start_server, name="server", args=())
+    th_register_server.start()
 
 def start_slackbot():
     """Start Slackbot."""
     path = "/home/pi/project/kagisys_logic/slackbot/"
     os.chdir(path)
-    os.system("sudo python2 slackbot.py")
+    os.system("sudo python slackbot.py")
 
 
 def start_nef_lock():
@@ -29,8 +31,12 @@ def start_nef_lock():
     # Move directry
     path = "/home/pi/project/kagisys_logic/nfc_lock/"
     os.chdir(path)
-    os.system("sudo python2 nfc_lock.py")
+    os.system("sudo python nfc_lock.py")
 
+def start_server():
+    path = "/home/pi/project/kagisys_logic/server/"
+    os.chdir(path)
+    os.system("npm start")
 
 if __name__ == '__main__':
     main()

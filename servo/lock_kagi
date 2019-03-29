@@ -6,12 +6,15 @@
 
 from model import servo_model
 from model import storage_model
-
+from model import led
 
 def main():
     """Lock door lock."""
     servo = servo_model.Servo()
     servo.lock()
+
+    l = led.LED()
+    l.lock()
 
     # update file
     storage = storage_model.StorageModel()
