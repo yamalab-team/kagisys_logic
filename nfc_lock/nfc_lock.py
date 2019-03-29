@@ -26,10 +26,10 @@ class NFC_Kagisys():
 		th.setDaemon(True)
 		th.start()
 		GPIO.setmode(GPIO.BCM)
-		GPIO.setup(self.BUTTON_ON, GPIO.IN)
-		GPIO.setup(self.BUTTON_OFF, GPIO.IN)
-		GPIO.add_event_detect(self.BUTTON_ON, GPIO.FALLING, callback=self.pushed_on, bouncetime=3000)
-		GPIO.add_event_detect(self.BUTTON_OFF, GPIO.FALLING, callback=self.pushed_off, bouncetime=3000)
+		#GPIO.setup(self.BUTTON_ON, GPIO.IN)
+		#GPIO.setup(self.BUTTON_OFF, GPIO.IN)
+		#GPIO.add_event_detect(self.BUTTON_ON, GPIO.FALLING, callback=self.pushed_on, bouncetime=3000)
+		#GPIO.add_event_detect(self.BUTTON_OFF, GPIO.FALLING, callback=self.pushed_off, bouncetime=3000)
 
 		while True:
 			time.sleep(1000)
@@ -44,11 +44,11 @@ class NFC_Kagisys():
 	def run(self):
 		"""メイン"""
 		self.clf = nfc.ContactlessFrontend('tty:AMA0:pn532')
-		target_req = nfc.clf.RemoteTarget("212F")
-                target_req.sensf_req = bytearray.fromhex("0000030000")
 		#繰り返し
 		while True:
-			target_res = self.clf.sense(target_req,iterations=10,interval=0.01)
+			target_req = nfc.clf.RemoteTarget("212F")
+	                target_req.sensf_req = bytearray.fromhex("0000030000")
+			target_res = self.clf.sense(target_req,iterations=10,interval=0.1)
                 	if target_res != None:
                     		tag = nfc.tag.activate(self.clf,target_res)
                     		tag.sys = 3
@@ -56,6 +56,8 @@ class NFC_Kagisys():
                     		self.touched(idm)
 				time.sleep(3)
 				print("relese")
+			else:
+				time.sleep(1)
 
 	def touched(self,tag):
 		"""タッチされたときの処理"""
@@ -85,12 +87,16 @@ class NFC_Kagisys():
 			print "error ! please check file path"
 
 	def pushed_on(self, sw):
+		print("bbbbbbbb")
 		toggle = self.get_toggle()
 		if toggle == "lock":
                         #鍵の解錠
                         os.system("open_kagi")
+		elif toggle == "open":
+			os.system("lock_kagi")
 
 	def pushed_off(self, sw):
+		print("aaaaaaaaaa")
 		toggle = self.get_toggle()
                 if toggle == "open":
                         #鍵の施錠
