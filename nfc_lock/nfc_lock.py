@@ -26,6 +26,8 @@ class NFC_Kagisys():
 		th.setDaemon(True)
 		th.start()
 		GPIO.setmode(GPIO.BCM)
+		self.errLED = [16,13]
+		GPIO.setup(self.errLED, GPIO.OUT)
 		#GPIO.setup(self.BUTTON_ON, GPIO.IN)
 		#GPIO.setup(self.BUTTON_OFF, GPIO.IN)
 		#GPIO.add_event_detect(self.BUTTON_ON, GPIO.FALLING, callback=self.pushed_on, bouncetime=3000)
@@ -69,7 +71,12 @@ class NFC_Kagisys():
 		if not self.db.checkIDm(tag_id):
 			#データが正しいidと異なっていた場合
 			self.write_not_auth_id(tag_id)
-
+			for i in range(4):
+				if(i%2==0):
+					GPIO.output(self.errLED, 0)
+				else:
+					GPIO.output(self.errLED, 1)
+				time.sleep(0.5)
 			print("No matching Key")
 			print("setting OK.")
 			return
