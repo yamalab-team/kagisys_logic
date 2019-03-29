@@ -68,21 +68,25 @@ class NFC_Kagisys():
 		tag_id=tag
 		print(tag_id)
 		self.db.addTouchedLog(tag_id)
+		# toggleの受け取り
+                toggle = self.get_toggle()
+
 		if not self.db.checkIDm(tag_id):
 			#データが正しいidと異なっていた場合
 			self.write_not_auth_id(tag_id)
-			for i in range(4):
+			for i in range(8):
 				if(i%2==0):
 					GPIO.output(self.errLED, 0)
 				else:
 					GPIO.output(self.errLED, 1)
 				time.sleep(0.5)
+			if toggle == "lock":
+				GPIO.output(self.errLED, 1)
+			else:
+				GPIO.output(self.errLED, 0)
 			print("No matching Key")
 			print("setting OK.")
 			return
-
-		# toggleの受け取り
-		toggle = self.get_toggle()
 
 		if toggle == "lock":
 			#鍵の解錠
