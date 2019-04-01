@@ -7,6 +7,8 @@ import os
 
 
 def main():
+    """GPIO setup"""
+    os.system("/home/pi/project/kagisys_logic/lcd_start.sh")
     """Main."""
     # run slack bot
     th_slack = threading.Thread(target=start_slackbot, name="slackbot", args=())
@@ -23,7 +25,7 @@ def start_slackbot():
     """Start Slackbot."""
     path = "/home/pi/project/kagisys_logic/slackbot/"
     os.chdir(path)
-    os.system("sudo python slackbot.py")
+    os.system("python slackbot.py")
 
 
 def start_nef_lock():
@@ -31,7 +33,7 @@ def start_nef_lock():
     # Move directry
     path = "/home/pi/project/kagisys_logic/nfc_lock/"
     os.chdir(path)
-    os.system("sudo python nfc_lock.py")
+    os.system("python nfc_lock.py")
 
 def start_server():
     path = "/home/pi/project/kagisys_logic/server/"

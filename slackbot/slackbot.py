@@ -44,8 +44,7 @@ def post(text):
         # Other Property.
         data=json.dumps({
             'text': u"7505:" + text,
-            'username': u'kagisys',
-            'icon_emoji': u':kagi:'
+            'username': u'kagisys'
         })
     )
     print(res.text)
