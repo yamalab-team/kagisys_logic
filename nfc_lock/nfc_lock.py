@@ -11,6 +11,7 @@ import os
 import binascii
 
 from db import DataBase
+from oled import OLED_Display
 
 
 class NFC_Kagisys():
@@ -18,9 +19,12 @@ class NFC_Kagisys():
 	def __init__(self):
 		self.BUTTON_ON=19
 		self.BUTTON_OFF=26
+		self.MODE = "Default"
 		"""基本設定とスレッドの呼び出し"""
 		#基本的なセッティング
 		self.db = DataBase()
+		self.oled = OLED_Display()
+		self.oled.print([self.MODE])
 		signal.signal(signal.SIGINT, self.exit_handler)
 		th = threading.Thread(target=self.run, name="th", args=())
 		th.setDaemon(True)
@@ -71,47 +75,63 @@ class NFC_Kagisys():
 		# toggleの受け取り
                 toggle = self.get_toggle()
 
-		if not self.db.checkIDm(tag_id):
-			#データが正しいidと異なっていた場合
-			self.write_not_auth_id(tag_id)
-			for i in range(8):
-				if(i%2==0):
-					GPIO.output(self.errLED, 0)
-				else:
-					GPIO.output(self.errLED, 1)
-				time.sleep(0.5)
+		if self.MODE == "Default":
+			if not self.db.checkIDm(tag_id):
+				#データが正しいidと異なっていた場合
+				self.write_not_auth_id(tag_id)
+				self.led(toggle)
+				self.oled.print([self.MODE, tag_id])
+				print("No matching Key")
+				print("setting OK.")
+				return
 			if toggle == "lock":
-				GPIO.output(self.errLED, 1)
+				#鍵の解錠
+				os.system("open_kagi")
+				self.oled.print([self.MODE, "Open"])
+			elif toggle == "open":
+				#鍵の施錠
+				os.system("lock_kagi")
+				self.oled.print([self.MODE, "Lock"])
 			else:
-				GPIO.output(self.errLED, 0)
-			print("No matching Key")
-			print("setting OK.")
-			return
-
-		if toggle == "lock":
-			#鍵の解錠
-			os.system("open_kagi")
-		elif toggle == "open":
-			#鍵の施錠
-			os.system("lock_kagi")
-		else:
-			print "error ! please check file path"
+				print("error ! please check file path")
+		elif self.MODE == "Register":
+			if self.db.checkIDm(tag_id):
+				self.MODE = "Authorization"
+				self.oled.print([self.MODE, "登録するカードをタッチ"])
+			else:
+				self.MODE = "Default"
+				self.oled.print([self.MODE, "登録失敗"])
+		elif self.MODE == "Authorization":
+			if not self.db.checkIDm(tag_id):
+				self.MODE = "Default"
+				self.db.addNewIDm(tag_id, "TestUser")
+				self.oled.print([self.MODE, "登録成功"])
+			else:
+				self.MODE = "Default"
+				self.oled.print([self.MODE, "登録失敗"])
 
 	def pushed_on(self, sw):
 		print("bbbbbbbb")
 		toggle = self.get_toggle()
 		if toggle == "lock":
-                        #鍵の解錠
-                        os.system("open_kagi")
+			#鍵の解錠
+			os.system("open_kagi")
+			self.oled.print([self.MODE, "Open"])
 		elif toggle == "open":
 			os.system("lock_kagi")
+			self.oled.print([self.MODE, "Lock"])
 
 	def pushed_off(self, sw):
 		print("aaaaaaaaaa")
 		toggle = self.get_toggle()
-                if toggle == "open":
-                        #鍵の施錠
-                        os.system("lock_kagi")
+		if toggle == "open":
+			#鍵の施錠
+			os.system("lock_kagi")
+			self.oled.print([self.MODE, "Lock"])
+
+	def pushed_register(self, sw):
+		self.MODE = "Register"
+		self.oled.print([self.MODE, "登録済みカードをタッチ"])
 
 	def get_toggle(self):
 		"""toggleデータの取得"""
@@ -132,6 +152,17 @@ class NFC_Kagisys():
 		file_.write(write_string)
 		file_.close() 
 
+	def led(self, toggle):
+		for i in range(8):
+			if(i%2==0):
+				GPIO.output(self.errLED, 0)
+			else:
+				GPIO.output(self.errLED, 1)
+			time.sleep(0.5)
+		if toggle == "lock":
+			GPIO.output(self.errLED, 1)
+		else:
+			GPIO.output(self.errLED, 0)
 
 if __name__ == '__main__':
 	NFC_Kagisys()
