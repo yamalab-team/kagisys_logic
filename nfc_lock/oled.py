@@ -114,7 +114,7 @@ class OLED_Display:
         self.disp.display()
     
     # textsは配列で与える max3つ
-    def print(self, texts):
+    def display(self, texts):
         self.draw.text((self.x, self.top),       "IP: " + str(self.IP),  font=self.fontE, fill=255)
         self.max = min(len(texts), 2) 
         for i in range(self.max):
