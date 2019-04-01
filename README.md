@@ -1,5 +1,5 @@
 # kagisys_logic
-部室自動鍵開閉システムのコア部分
+7505室自動鍵開閉システムのコア部分
 
 ## ソフト側の使い方
 ### 1. モータに関するソースを`/usr/local/bin`に追加
@@ -27,6 +27,9 @@ database_name=name
 
 [Slack]
 url=url
+
+[MYSQL]
+url=mysql://hogehoge
 ```
 
 ### 4. 再起動
@@ -34,3 +37,15 @@ url=url
 ```shell
 sudo reboot
 ```
+
+## GPIOの接続（BCM番号）
+- LED(解鍵時) -> [20, 21]
+- LED(施錠時) -> [16, 13]
+- BUTTON(解鍵) -> 19
+- BUTTON(施錠) -> 26
+- NFCリーダー(SCL) -> 14
+- NFCリーダー(SDA) -> 15
+- サーボ -> 12
+- LCD(SCL) -> 3
+- LCD(SDA) -> 2
+- LCD(VCC) -> 18
