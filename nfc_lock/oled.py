@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright (c) 2017 Adafruit Industries
 # Author: Tony DiCola & James DeVito
 #
@@ -20,7 +22,6 @@
 # THE SOFTWARE.
 
 
-# -*- coding: utf-8 -*-
 import time
 
 import Adafruit_GPIO.SPI as SPI
@@ -102,27 +103,41 @@ class OLED_Display:
 
         # Load default font.
         self.fontE = ImageFont.load_default()
-        self.fontJ = ImageFont.load.truetype('fonts-japanese-gothic.ttf', 8)
+        self.fontJ = ImageFont.truetype('fonts-japanese-gothic.ttf', 16)
 
         # Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
         # Some other nice fonts to try: http://www.dafont.com/bitmap.php
         # font = ImageFont.truetype('Minecraftia.ttf', 8)
         self.cmd = "hostname -I | cut -d\' \' -f1"
         self.IP = subprocess.check_output(self.cmd, shell = True )
-        self.draw.text((self.x, self.top),       "IP: " + str(self.IP),  font=self.font, fill=255)
+        self.draw.text((self.x, self.top),       "IP: " + str(self.IP),  font=self.fontE, fill=255)
         self.disp.image(self.image)
         self.disp.display()
     
     # textsは配列で与える max3つ
-    def display(self, texts):
-        self.draw.text((self.x, self.top),       "IP: " + str(self.IP),  font=self.fontE, fill=255)
+    def display(self, texts, fonts):
+	draw = ImageDraw.Draw(self.image)
+	draw.rectangle((0,0,self.width,self.height), outline=0, fill=0)
+        draw.text((self.x, self.top),       "IP: " + str(self.IP),  font=self.fontE, fill=255)
         self.max = min(len(texts), 2) 
+	ichi = self.top+8
         for i in range(self.max):
-            self.draw.text((self.x, self.top+((i+1)*10)), texts[i], font=self.fontJ, fill=255)
+	    if(fonts[i] == "ja"):
+		font = self.fontJ
+	    else:
+		font = self.fontE
+	    s = texts[i].encode('unicode-escape')
+            draw.text((self.x, ichi), s, font=font, fill=255)
+	    if(fonts[i] == "ja"):
+                ichi = ichi+16
+            else:
+                ichi = ichi+8
         self.disp.image(self.image)
         self.disp.display()
 
     def clear(self):
+	self.disp.clear()
+	self.disp.display()
         self.draw.text((self.x, self.top),       "IP: " + str(self.IP),  font=self.fontE, fill=255)
         self.disp.image(self.image)
         self.disp.display()

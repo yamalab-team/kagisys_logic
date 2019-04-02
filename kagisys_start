@@ -4,11 +4,12 @@
 
 import threading
 import os
-
+import time
 
 def main():
     """GPIO setup"""
     os.system("/home/pi/project/kagisys_logic/lcd_start.sh")
+    time.sleep(10)
     """Main."""
     # run slack bot
     th_slack = threading.Thread(target=start_slackbot, name="slackbot", args=())
