@@ -8,13 +8,19 @@
 cp -rp ./servo /usr/local/bin
 ```
 
-### 2. 自動起動設定をする（`rc.local`にコードの追加）
-/etc/rc.localの`exit 0`の上辺りに内に以下のコードを追加。
-（$filepathはその場に合わせたパスを書く）
-```shell:/etc/rc.local
-cd $filepath
-./kagisys_start 
+### 2. 自動起動設定をする（systemctl）
+/etc/systemd/system にファイルを作成（例: kagisys.service）
+```shell:/etc/systemd/system/kagisys.service
+[Unit]
+Description=名前
+
+[Service]
+ExecStart=/usr/bin/python  任意のパス/kagisys_logic/kagisys_start
+
+[Install]
+WantedBy=multi-user.target
 ```
+`# systemctl enable kagisys.service`
 
 ### 3. kagisys.configを書く
 ../kagisys.configには以下のように書く。
@@ -39,10 +45,10 @@ sudo reboot
 ```
 
 ## GPIOの接続（BCM番号）
-- LED(解鍵時) -> [20]
-- LED(施錠時) -> [16]
-- LED(内側のフルカラー) -> 13
-- BUTTON(左) -> 21
+- LED(解鍵時) -> [21]
+- LED(施錠時) -> [13]
+- LED(内側のフルカラー) -> 18
+- BUTTON(左) -> 20
 - BUTTON(中) -> 19
 - BUTTON(右) -> 26
 - NFCリーダー(SCL) -> 14
@@ -50,4 +56,4 @@ sudo reboot
 - サーボ -> 12
 - LCD(SCL) -> 3
 - LCD(SDA) -> 2
-- LCD(VCC) -> 18
+- LCD(VCC) -> 17
