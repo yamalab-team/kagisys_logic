@@ -19,7 +19,7 @@ class NFC_Kagisys():
 	def __init__(self):
 		self.BUTTON_ON=19
 		self.BUTTON_OFF=26
-		self.BUTTON_SET=21
+		self.BUTTON_SET=20
 		self.MODE = "Default"
 		"""基本設定とスレッドの呼び出し"""
 		#基本的なセッティング
@@ -31,7 +31,7 @@ class NFC_Kagisys():
 		th.setDaemon(True)
 		th.start()
 		GPIO.setmode(GPIO.BCM)
-		self.errLED = [16]
+		self.errLED = [13]
 		GPIO.setup(self.errLED, GPIO.OUT)
 		GPIO.setup(self.BUTTON_ON, GPIO.IN)
 		GPIO.setup(self.BUTTON_OFF, GPIO.IN)

@@ -103,7 +103,7 @@ class OLED_Display:
 
         # Load default font.
         self.fontE = ImageFont.load_default()
-        self.fontJ = ImageFont.truetype('fonts-japanese-gothic.ttf', 16)
+        self.fontJ = ImageFont.truetype('fonts-japanese-gothic.ttf', 12)
 
         # Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
         # Some other nice fonts to try: http://www.dafont.com/bitmap.php
@@ -126,12 +126,12 @@ class OLED_Display:
 		font = self.fontJ
 	    else:
 		font = self.fontE
-	    s = texts[i].encode('unicode-escape')
+	    s = texts[i].decode('utf-8')
             draw.text((self.x, ichi), s, font=font, fill=255)
 	    if(fonts[i] == "ja"):
-                ichi = ichi+16
+                ichi = ichi+12
             else:
-                ichi = ichi+8
+                ichi = ichi+9
         self.disp.image(self.image)
         self.disp.display()
 
