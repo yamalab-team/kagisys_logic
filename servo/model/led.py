@@ -12,8 +12,8 @@ class LED():
         """Set gpio and exit handler."""
         # set exit handler
         signal.signal(signal.SIGINT, self.exit_handler)
-	self.OPENs = [20, 21]
-	self.CLOSEs = [16, 13]
+	self.OPENs = [21]
+	self.CLOSEs = [13]
         # set gpio
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.OPENs, GPIO.OUT)

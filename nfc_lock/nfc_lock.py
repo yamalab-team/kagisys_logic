@@ -110,14 +110,27 @@ class NFC_Kagisys():
 			else:
 				self.MODE = "Default"
 				self.oled.display([self.MODE, "登録失敗"], ["en", "ja"])
+				if toggle == "lock":
+                                	self.colorWipe(self.strip, Color(255, 0, 0)) #red
+                        	else:
+                                	self.colorWipe(self.strip, Color(20, 255, 35)) #green
 		elif self.MODE == "Authorization":
 			if not self.db.checkIDm(tag_id):
 				self.MODE = "Default"
 				self.db.addNewIDm(tag_id, "TestUser")
 				self.oled.display([self.MODE, "登録成功"], ["en", "ja"])
+				for i in range(2):
+					self.colorWipe(self.strip, Color(249, 243, 1))
+					time.sleep(.5)
+					self.colorWipe(self.strip, Color(0, 0, 0))
+					time.sleep(.5)
 			else:
 				self.MODE = "Default"
 				self.oled.display([self.MODE, "登録失敗"], ["en", "ja"])
+			if toggle == "lock":
+                        	self.colorWipe(self.strip, Color(255, 0, 0)) #red
+                	else:
+                        	self.colorWipe(self.strip, Color(20, 255, 35)) #green
 
 	def pushed_on(self, sw):
 		print("bbbbbbbb")
@@ -135,6 +148,7 @@ class NFC_Kagisys():
 
 	def pushed_register(self, sw):
 		self.MODE = "Register"
+		self.colorWipe(self.strip, Color(249, 243, 1))
 		self.oled.display([self.MODE, "登録済みカードをタッチ"], ["en", "ja"])
 
 	def get_toggle(self):
@@ -158,7 +172,7 @@ class NFC_Kagisys():
 
 	def Dopen(self):
 		os.system("open_kagi")
-		self.colorWipe(self.strip, Color(0, 0, 255)) #green
+		self.colorWipe(self.strip, Color(20, 255, 35)) #green
 		self.oled.display([self.MODE, "OPEN"], ["en", "en"])
 	def Dlock(self):
 		os.system("lock_kagi")
@@ -177,7 +191,7 @@ class NFC_Kagisys():
 		else:
 			GPIO.output(self.errLED, 0)
 	
-	def colorWipe(strip, color, wait_ms=50):
+	def colorWipe(self, strip, color, wait_ms=50):
 		"""Wipe color across display a pixel at a time."""
 		for i in range(strip.numPixels()):
 			strip.setPixelColor(i, color)

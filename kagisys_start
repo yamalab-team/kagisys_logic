@@ -34,7 +34,7 @@ def start_nef_lock():
     # Move directry
     #path = "/home/pi/project/kagisys_logic/nfc_lock/"
     #os.chdir(path)
-    os.system("python /home/pi/project/kagisys_logic/nfc_lock/nfc_lock.py")
+    os.system("sudo python /home/pi/project/kagisys_logic/nfc_lock/nfc_lock.py")
 
 def start_server():
     path = "/home/pi/project/kagisys_logic/server/"
