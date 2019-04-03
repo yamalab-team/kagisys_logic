@@ -9,6 +9,8 @@ import nfc
 import threading
 import os
 import binascii
+from neopixel import *
+import argparse
 
 from db import DataBase
 from oled import OLED_Display
@@ -30,6 +32,12 @@ class NFC_Kagisys():
 		th = threading.Thread(target=self.run, name="th", args=())
 		th.setDaemon(True)
 		th.start()
+		#Neopixel
+		# Create NeoPixel object with appropriate configuration.
+		self.strip = Adafruit_NeoPixel(1, 18, 800000, 10, False, 255, 0)
+		# Intialize the library (must be called once before other functions).
+		self.strip.begin()
+		#ボタン
 		GPIO.setmode(GPIO.BCM)
 		self.errLED = [13]
 		GPIO.setup(self.errLED, GPIO.OUT)
@@ -89,12 +97,10 @@ class NFC_Kagisys():
 				return
 			if toggle == "lock":
 				#鍵の解錠
-				os.system("open_kagi")
-				self.oled.display([self.MODE, "OPEN"], ["en", "en"])
+				self.Dopen()
 			elif toggle == "open":
 				#鍵の施錠
-				os.system("lock_kagi")
-				self.oled.display([self.MODE, "LOCK"], ["en", "en"])
+				self.Dlock()
 			else:
 				print("error ! please check file path")
 		elif self.MODE == "Register":
@@ -118,19 +124,14 @@ class NFC_Kagisys():
 		toggle = self.get_toggle()
 		if toggle == "lock":
 			#鍵の解錠
-			os.system("open_kagi")
-			self.oled.display([self.MODE, "OPEN"], ["en", "en"])
-		elif toggle == "open":
-			os.system("lock_kagi")
-			self.oled.display([self.MODE, "LOCK"], ["en", "en"])
+			self.Dopen()
 
 	def pushed_off(self, sw):
 		print("aaaaaaaaaa")
 		toggle = self.get_toggle()
 		if toggle == "open":
 			#鍵の施錠
-			os.system("lock_kagi")
-			self.oled.display([self.MODE, "LOCK"], ["en", "en"])
+			self.Dlock()
 
 	def pushed_register(self, sw):
 		self.MODE = "Register"
@@ -153,7 +154,16 @@ class NFC_Kagisys():
 		os.chdir("/home/pi/project/kagisys_logic/")
                 file_ = open('not_auth.log', 'a')		
 		file_.write(write_string)
-		file_.close() 
+		file_.close()
+
+	def Dopen(self):
+		os.system("open_kagi")
+		self.colorWipe(self.strip, Color(0, 0, 255)) #green
+		self.oled.display([self.MODE, "OPEN"], ["en", "en"])
+	def Dlock(self):
+		os.system("lock_kagi")
+		self.colorWipe(self.strip, Color(255, 0, 0)) #red
+		self.oled.display([self.MODE, "LOCK"], ["en", "en"])
 
 	def led(self, toggle):
 		for i in range(8):
@@ -166,6 +176,13 @@ class NFC_Kagisys():
 			GPIO.output(self.errLED, 1)
 		else:
 			GPIO.output(self.errLED, 0)
+	
+	def colorWipe(strip, color, wait_ms=50):
+		"""Wipe color across display a pixel at a time."""
+		for i in range(strip.numPixels()):
+			strip.setPixelColor(i, color)
+			strip.show()
+			time.sleep(wait_ms/1000.0)
 
 if __name__ == '__main__':
 	NFC_Kagisys()
