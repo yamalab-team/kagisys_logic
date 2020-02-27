@@ -1,5 +1,7 @@
 import servo
 import led
+import slack
+import oled
 
 class Observer:
     def __init__(self):
@@ -19,18 +21,15 @@ class Observer:
         for ob in self._observers:
             ob.update(self)
 
-class Slack():
-    def update(self, kagi):
-        print(kagi.isOpen)
-
 class Kagi(Observer):
     def __init__(self):
         super().__init__()
         self.isOpen = False
         # 鍵の状態が変わったときに通知する
-        self.attach(Slack())
-        self.attach(servo())
-        self.attach(led())
+        self.attach(slack.Slack())
+        self.attach(servo.Servo())
+        self.attach(led.Led())
+        self.attach(oled.OLED_Display())
 
     def open(self):
         if self.isOpen:
