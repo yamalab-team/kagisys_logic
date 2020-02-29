@@ -33,6 +33,7 @@ from PIL import ImageFont
 
 import subprocess
 
+
 class OLED_Display:
     def __init__(self):
         # Raspberry Pi pin configuration:
@@ -90,7 +91,7 @@ class OLED_Display:
         self.draw = ImageDraw.Draw(self.image)
 
         # Draw a black filled box to clear the image.
-        self.draw.rectangle((0,0,self.width,self.height), outline=0, fill=0)
+        self.draw.rectangle((0, 0, self.width, self.height), outline=0, fill=0)
 
         # Draw some shapes.
         # First define some constants to allow easy resizing of shapes.
@@ -100,7 +101,6 @@ class OLED_Display:
         # Move left to right keeping track of the current x position for drawing shapes.
         self.x = 0
 
-
         # Load default font.
         self.fontE = ImageFont.load_default()
         self.fontJ = ImageFont.truetype('fonts-japanese-gothic.ttf', 12)
@@ -109,15 +109,16 @@ class OLED_Display:
         # Some other nice fonts to try: http://www.dafont.com/bitmap.php
         # font = ImageFont.truetype('Minecraftia.ttf', 8)
         self.cmd = "hostname -I | cut -d\' \' -f1"
-        self.IP = subprocess.check_output(self.cmd, shell = True )
-        self.draw.text((self.x, self.top), "IP: " + str(self.IP),  font=self.fontE, fill=255)
+        self.IP = subprocess.check_output(self.cmd, shell=True)
+        self.draw.text((self.x, self.top), "IP: " +
+                       str(self.IP),  font=self.fontE, fill=255)
         self.disp.image(self.image)
         self.disp.display()
-    
+
     # textsは配列で与える max3つ
     def display(self, texts, fonts):
 	    draw = ImageDraw.Draw(self.image)
-	    draw.rectangle((0,0,self.width,self.height), outline=0, fill=0)
+	    draw.rectangle((0, 0, self.width, self.height), outline=0, fill=0)
         draw.text((self.x, self.top),　"IP: " + str(self.IP),  font=self.fontE, fill=255)
         self.max = min(len(texts), 2)
 	    ichi = self.top+8

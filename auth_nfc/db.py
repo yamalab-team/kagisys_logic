@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import configparser
-import yaml
 import time
-import MySQLdb
+import mysql.connector
 
 
 class DataBase:
@@ -16,10 +15,11 @@ class DataBase:
 
 	def __open(self):
 		try:
-			ret = MySQLdb.connect(host=self.config.get('SQL','host_name'),
-					user=self.config.get('SQL','user_name'),
-					passwd=self.config.get('SQL','user_password'),
-					db=self.config.get('SQL','database_name'))
+			ret = mysql.connector.connect(
+                host=self.config.get('SQL','host_name'),
+				user=self.config.get('SQL','user_name'),
+				password=self.config.get('SQL','user_password'),
+				database=self.config.get('SQL','database_name'))
 			return ret
 		except:
 			print('***error*** database can\'t open!')
