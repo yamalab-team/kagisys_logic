@@ -9,7 +9,7 @@ class Slack:
         current = Path().resolve()
         print("slack", current)
         config = configparser.SafeConfigParser()
-        config.read('')
+        # config.read('')
         self.url = "incomming messageのurl"
 
     def update(self, kagi):
