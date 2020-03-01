@@ -8,8 +8,8 @@ from pathlib import Path
 
 class DataBase:
 	def __init__(self):
-        current = Path().resolve()
-        print("db", current)
+		current = Path().resolve()
+		print("db", current)
 		# get url from kagisys.conf
 		self.config = configparser.SafeConfigParser()
 		self.config.read('/home/pi/project/kagisys_logic/kagisys.conf')
@@ -17,7 +17,7 @@ class DataBase:
 	def __open(self):
 		try:
 			ret = mysql.connector.connect(
-                host=self.config.get('SQL','host_name'),
+				host=self.config.get('SQL','host_name'),
 				user=self.config.get('SQL','user_name'),
 				password=self.config.get('SQL','user_password'),
 				database=self.config.get('SQL','database_name'))
