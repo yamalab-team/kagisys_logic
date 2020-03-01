@@ -47,7 +47,7 @@ class DataBase:
 		cursor.close()
 		conn.close()
 		print(result)
-		return result[0][1]
+		return result[0][0]
 
 	def addNewIDm(self, IDm, account_id):
 		conn = self.__open()
