@@ -9,8 +9,8 @@ class Slack:
         current = Path().resolve()
         print("slack", current)
         config = configparser.SafeConfigParser()
-        # config.read('')
-        self.url = "incomming messageのurl"
+        config.read(current / "conf/kagisys.config")
+        self.url = config.get("Slack", "url")
 
     def update(self, kagi):
         if kagi.isOpen:
