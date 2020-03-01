@@ -1,7 +1,7 @@
 import nfc
 import binascii
 
-from db import DataBase
+from .db import DataBase
 
 class NFC_Reader:
     def __init__(self):
