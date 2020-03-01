@@ -13,7 +13,7 @@ class NFC_Reader:
         
     def recognition(self):
         target_res = self.clf.sense(self.target_req, iterations=10, interval=0.1)
-        if target_res == None:
+        if not target_res:
             return None
         tag = nfc.tag.activate(self.clf,target_res)
         tag.sys = 3
