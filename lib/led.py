@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Led():
     def update(self, kagi):
         if kagi.isOpen:

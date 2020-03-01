@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from lib import Kagi, Led, OLED_Display, Slack
 
 from auth_nfc.kagisys_nfc import NFC_Reader
