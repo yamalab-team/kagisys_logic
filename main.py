@@ -13,15 +13,15 @@ def main():
     # k.attach(led_module)
     # k.attach(display_module)
     while(True):
-        user_id = n.recognition()
+        res = n.recognition()
         # 在室管理に投げる
-        if not user_id:
+        if not res:
             continue
-        print(user_id)
+        (u_name, slack_id) = res
         if k.isOpen:
-            k.lock()
+            k.lock(slackid=slack_id)
         else:
-            k.open()
+            k.open(slackid=slack_id)
 
 
 if __name__ == "__main__":

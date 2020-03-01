@@ -13,13 +13,15 @@ class Slack:
         self.url = config.get("Slack", "url")
 
     def update(self, kagi):
+        msg = ""
+        if kagi.currentSkackId:
+            msg = "<@{kagi.currentSlackId}}>が"
         if kagi.isOpen:
-            msg = "開くました"
+            msg += "開けました"
             self.post(msg)
         else:
-            msg = "閉めました"
+            msg += "閉めました"
             self.post(msg)
-        print("Kagi -> ", kagi.isOpen)
     
     def post(self, msg):
         res = requests.post(

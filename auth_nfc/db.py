@@ -64,3 +64,12 @@ class DataBase:
 		conn.commit()
 		cursor.close()
 		conn.close()
+
+	def getSlackId(self, userid):
+		conn = self.__open()
+		cursor = conn.cursor()
+		cursor.execute("select slackid from Users where userid=%s", (userid,))
+		result = cursor.fetchall()
+		cursor.close()
+		conn.close()
+		return result[0][0]
