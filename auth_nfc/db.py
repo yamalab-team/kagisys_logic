@@ -46,7 +46,6 @@ class DataBase:
 		result = cursor.fetchall()
 		cursor.close()
 		conn.close()
-		print(result)
 		return result[0][0]
 
 	def addNewIDm(self, IDm, account_id):
