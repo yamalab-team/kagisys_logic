@@ -12,7 +12,7 @@ class DataBase:
 		print("db", current)
 		# get url from kagisys.conf
 		self.config = configparser.SafeConfigParser()
-		self.config.read('/home/pi/project/kagisys_logic/kagisys.conf')
+		self.config.read(current / "conf/kagisys.config")
 
 	def __open(self):
 		try:
@@ -29,7 +29,7 @@ class DataBase:
 	def checkIDm(self, IDm):
 		conn = self.__open()
 		cursor = conn.cursor()
-		cursor.execute("select * from nfctag where IDm=%s", (IDm,))
+		cursor.execute("select * from Nfctags where idm=%s", (IDm,))
 		if cursor.rowcount == 0:
 			cursor.close()
 			conn.close()
@@ -42,7 +42,7 @@ class DataBase:
 	def getUsername(self, IDm):
 		conn = self.__open()
 		cursor = conn.cursor()
-		cursor.execute("select * from nfctag where IDm=%s", (IDm,))
+		cursor.execute("select userid from Nfctags where idm=%s", (IDm,))
 		result = cursor.fetchall()
 		cursor.close()
 		conn.close()

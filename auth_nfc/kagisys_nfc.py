@@ -18,6 +18,7 @@ class NFC_Reader:
         tag = nfc.tag.activate(self.clf,target_res)
         tag.sys = 3
         idm = binascii.hexlify(tag.idm)
+        print(idm)
         return self.authorization(idm)
 
     def authorization(self, idm):
