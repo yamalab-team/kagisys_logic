@@ -30,6 +30,7 @@ class DataBase:
 		conn = self.__open()
 		cursor = conn.cursor()
 		cursor.execute("select * from Nfctags where idm=%s", (IDm,))
+		cursor.fetchall()
 		if cursor.rowcount == 0:
 			cursor.close()
 			conn.close()
