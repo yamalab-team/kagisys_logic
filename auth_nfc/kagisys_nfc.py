@@ -6,7 +6,8 @@ from .db import DataBase
 class NFC_Reader:
     def __init__(self):
         self.db = DataBase()
-        self.clf = nfc.ContactlessFrontend("tty:AMA0:pn532")
+        # self.clf = nfc.ContactlessFrontend("tty:AMA0:pn532")
+        self.clf = nfc.ContactlessFrontend("usb")
         self.target_req = nfc.clf.RemoteTarget("212F") # NFC Type:Felica
         self.target_req.sensf_req = bytearray.fromhex("0000030000")
         

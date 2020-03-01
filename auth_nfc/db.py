@@ -4,14 +4,15 @@
 import configparser
 import time
 import mysql.connector
-
+from pathlib import Path
 
 class DataBase:
 	def __init__(self):
+        current = Path().resolve()
+        print("db", current)
 		# get url from kagisys.conf
 		self.config = configparser.SafeConfigParser()
 		self.config.read('/home/pi/project/kagisys_logic/kagisys.conf')
-		url = self.config.get('Slack', 'url')
 
 	def __open(self):
 		try:
