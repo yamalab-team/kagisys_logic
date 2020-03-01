@@ -1,7 +1,4 @@
-from lib.key_state import Kagi
-from lib.slack import Slack
-from lib.led import Led
-from lib.oled import OLED_Display
+from lib import Kagi, Led, OLED_Display, Slack
 
 from auth_nfc.kagisys_nfc import NFC_Reader
 

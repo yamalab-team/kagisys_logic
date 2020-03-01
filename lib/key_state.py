@@ -1,4 +1,4 @@
-from servo import Servo
+from . import Servo
 
 class Observer:
     def __init__(self):
