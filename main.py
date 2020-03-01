@@ -17,6 +17,7 @@ def main():
         # 在室管理に投げる
         if not user_id:
             continue
+        print(user_id)
         if k.isOpen:
             k.lock()
         else:
