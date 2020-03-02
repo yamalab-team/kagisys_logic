@@ -19,7 +19,7 @@ class NFC_Reader:
         tag.sys = 3
         idm = binascii.hexlify(tag.idm)
         print(idm.decode("utf-8"))
-        return self.authorization(idm)
+        return idm.decode("utf-8")
 
     def authorization(self, idm):
         # db check idm

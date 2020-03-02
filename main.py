@@ -8,14 +8,20 @@ def main():
     n = NFC_Reader()
     # led_module = Led()
     # display_module = OLED_Display()
+    s = Slack()
 
-    k.attach(Slack())
+    k.attach(s)
     # k.attach(led_module)
     # k.attach(display_module)
     while(True):
-        res = n.recognition()
+        idm = n.recognition()
         # 在室管理に投げる
+        if not idm:
+            continue
+        res = n.authorization(idm=idm)
         if not res:
+            # 登録されていないもの
+            s.post("未登録のNFCカード：" + idm)
             continue
         (u_name, slack_id) = res
         if k.isOpen:
