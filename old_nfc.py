@@ -64,13 +64,13 @@ class NFC_Kagisys():
 		#繰り返し
 		while True:
 			target_req = nfc.clf.RemoteTarget("212F")
-	                target_req.sensf_req = bytearray.fromhex("0000030000")
+	        target_req.sensf_req = bytearray.fromhex("0000030000")
 			target_res = self.clf.sense(target_req,iterations=10,interval=0.1)
-                	if target_res != None:
-                    		tag = nfc.tag.activate(self.clf,target_res)
-                    		tag.sys = 3
+            if target_res != None:
+                tag = nfc.tag.activate(self.clf,target_res)
+                tag.sys = 3
 				idm = binascii.hexlify(tag.idm)
-                    		self.touched(idm)
+                self.touched(idm)
 				time.sleep(3)
 				print("relese")
 			else:

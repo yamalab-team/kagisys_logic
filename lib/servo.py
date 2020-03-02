@@ -1,36 +1,47 @@
 # -*- coding: utf-8 -*-
 
+"""This program is servo motor contral model."""
+
 import signal
 import RPi.GPIO as GPIO
 import time
 
 
-class LED():
+class Servo():
     """This class contral servo motor."""
 
     def __init__(self):
         """Set gpio and exit handler."""
         # set exit handler
         signal.signal(signal.SIGINT, self.exit_handler)
-	self.OPENs = [21]
-	self.CLOSEs = [13]
+
         # set gpio
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.OPENs, GPIO.OUT)
-	GPIO.setup(self.CLOSEs, GPIO.OUT)
+        GPIO.setup(12, GPIO.OUT)
 
     def exit_handler(self):
         """Exit handler."""
+        print("Exit motor")
         GPIO.cleanup()
 
     def open(self):
         """Open servo moter."""
         # contral servo
-        GPIO.output(self.OPENs, 1)
-	GPIO.output(self.CLOSEs, 0)
+        servo = GPIO.PWM(12, 50)
+        servo.start(11.5)
+        time.sleep(0.5)
+        servo.stop()
 
     def lock(self):
         """Lock servo moter."""
         # contral servo
-        GPIO.output(self.OPENs, 0)
-        GPIO.output(self.CLOSEs, 1)
+        servo = GPIO.PWM(12, 50)
+        servo.start(6.3)
+        time.sleep(0.5)
+        servo.stop()
+
+    def update(self, kagi):
+        if kagi.isOpen:
+            self.open()
+        else:
+            self.lock()
