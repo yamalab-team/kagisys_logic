@@ -14,8 +14,9 @@ class Slack:
 
     def update(self, kagi):
         msg = ""
-        if kagi.currentSlackId:
-            msg = f"<@{kagi.currentSlackId}>が"
+        if kagi.currentName:
+            # msg = f"<@{kagi.currentSlackId}>が"
+            msg = "{kagi.currentName}が"
         if kagi.isOpen:
             msg += "開けました"
             self.post(msg)

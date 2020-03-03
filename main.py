@@ -23,11 +23,11 @@ def main():
             # 登録されていないもの
             s.post("未登録のNFCカード：" + idm)
             continue
-        (u_name, slack_id) = res
+        (u_id, u_name) = res
         if k.isOpen:
-            k.lock(slackid=slack_id)
+            k.lock(u_name=u_name)
         else:
-            k.open(slackid=slack_id)
+            k.open(u_name=u_name)
 
 
 if __name__ == "__main__":

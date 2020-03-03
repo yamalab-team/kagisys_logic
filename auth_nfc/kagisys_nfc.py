@@ -24,7 +24,7 @@ class NFC_Reader:
     def authorization(self, idm):
         # db check idm
         if self.db.checkIDm(idm):
-            uname = self.db.getUsername(idm)
-            return (uname, self.db.getSlackId(uname))
+            u_id = self.db.getUserId(idm)
+            return (u_id, self.db.getUserName(userid=u_id))
         else:
             return False

@@ -40,7 +40,7 @@ class DataBase:
 			conn.close()
 			return True
 
-	def getUsername(self, IDm):
+	def getUserId(self, IDm):
 		conn = self.__open()
 		cursor = conn.cursor()
 		cursor.execute("select userid from Nfctags where idm=%s", (IDm,))
@@ -70,6 +70,15 @@ class DataBase:
 		conn = self.__open()
 		cursor = conn.cursor()
 		cursor.execute("select slackid from Users where userid=%s", (userid,))
+		result = cursor.fetchall()
+		cursor.close()
+		conn.close()
+		return result[0][0]
+
+	def getUserName(self, userid):
+		conn = self.__open()
+		cursor = conn.cursor()
+		cursor.execute("select username from Users where userid=%s", (userid,))
 		result = cursor.fetchall()
 		cursor.close()
 		conn.close()
