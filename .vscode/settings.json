@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/Users/sun-mm/.local/share/virtualenvs/kagisys_logic-VqH1VXGJ/bin/python"
+    "python.pythonPath": "/Users/sun-mm/.local/share/virtualenvs/kagisys_logic-VqH1VXGJ/bin/python",
+    "codic.case": "snake_case"
 }

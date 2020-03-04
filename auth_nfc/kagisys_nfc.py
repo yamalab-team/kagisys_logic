@@ -28,3 +28,6 @@ class NFC_Reader:
             return (u_id, self.db.getUserName(userid=u_id))
         else:
             return False
+    
+    def addUser(self, idm, u_id):
+        self.db.addNewIDm(IDm=idm, account_id=u_id)
