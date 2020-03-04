@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
+import RPi.GPIO as GPIO
 from lib import Kagi, Led, OLED_Display, Slack
-
 from auth_nfc.kagisys_nfc import NFC_Reader
 
 class Kagisys:
     __DEFAULT = "defalut"
     __AUTHORIZE = "auhorize"
     __ADDNEWUSER = "addnewuser"
-    MODE = __DEFAULT
+    MODE = __DEFAULT 
     
     def migration_to_authorization(self):
         self.MODE = self.__AUTHORIZE
@@ -18,18 +18,7 @@ class Kagisys:
         self.MODE = self.__DEFAULT
         self.authorization_uid = None
 
-
 def main():
-    k = Kagi()
-    kagisys = Kagisys()
-    n = NFC_Reader()
-    # led_module = Led()
-    # display_module = OLED_Display()
-    s = Slack()
-
-    k.attach(s)
-    # k.attach(led_module)
-    # k.attach(display_module)
     while(True):
         idm = n.recognition()
         # 在室管理に投げる
@@ -61,4 +50,26 @@ def main():
 
 
 if __name__ == "__main__":
+    k = Kagi()
+    kagisys = Kagisys()
+    n = NFC_Reader()
+    # led_module = Led()
+    # display_module = OLED_Display()
+    s = Slack()
+
+    k.attach(s)
+    # k.attach(led_module)
+    # k.attach(display_module)
+
+    # GPIO Button Interrupt
+    GPIO.setmode(GPIO.BCM)
+    B_lock     = 0
+    B_open     = 0
+    B_register = 0
+    GPIO.setup(B_lock, GPIO.IN)
+    GPIO.setup(B_open, GPIO.IN)
+    GPIO.setup(B_register, GPIO.IN)
+    GPIO.add_event_detect(B_lock, GPIO.RISING, callback=k.lock, bouncetime=1000)
+    GPIO.add_event_detect(B_open, GPIO.RISING, callback=k.open, bouncetime=1000)
+    GPIO.add_event_detect(B_register, GPIO.RISING, callback=kagisys.migration_to_authorization, bouncetime=1000)
     main()

@@ -50,9 +50,10 @@ class DataBase:
 		return result[0][0]
 
 	def addNewIDm(self, IDm, account_id):
+		userid = account_id
 		conn = self.__open()
 		cursor = conn.cursor()
-		cursor.execute('insert into nfctag VALUES (%s, %s)',(IDm, account_id))
+		cursor.execute('insert into Nfctags VALUES (%s, %s)',(idm, userid))
 		conn.commit()
 		cursor.close()
 		conn.close()
