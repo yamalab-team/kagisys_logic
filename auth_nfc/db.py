@@ -51,6 +51,7 @@ class DataBase:
 
 	def addNewIDm(self, IDm, account_id):
 		userid = account_id
+		idm = IDm
 		conn = self.__open()
 		cursor = conn.cursor()
 		cursor.execute('insert into Nfctags VALUES (%s, %s)',(idm, userid))

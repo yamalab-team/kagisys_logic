@@ -1,22 +1,27 @@
 # -*- coding: utf-8 -*-
 import RPi.GPIO as GPIO
-from lib import Kagi, Led, OLED_Display, Slack
+from lib import Kagi, Led, OLED_Display, Slack, Observer
 from auth_nfc.kagisys_nfc import NFC_Reader
 
-class Kagisys:
+class Kagisys(Observer):
     __DEFAULT = "defalut"
     __AUTHORIZE = "auhorize"
     __ADDNEWUSER = "addnewuser"
     MODE = __DEFAULT 
+    def __init__(self):
+        super().__init__()
     
     def migration_to_authorization(self):
         self.MODE = self.__AUTHORIZE
+        self.notify()
     def migration_to_adduser(self, u_id):
         self.MODE = self.__ADDNEWUSER
         self.authorization_uid = u_id
+        self.notify()
     def migration_to_default(self):
         self.MODE = self.__DEFAULT
         self.authorization_uid = None
+        self.notify()
 
 def main():
     while(True):
@@ -29,6 +34,7 @@ def main():
             if not res:
                 # 登録されていないもの
                 s.post("未登録のNFCカード：" + idm)
+                led_module.error()
                 continue
             (u_id, u_name) = res
             if k.isOpen:
@@ -38,6 +44,7 @@ def main():
         elif kagisys.MODE == kagisys.__AUTHORIZE:
             # 認証処理
             if not res:
+                led_module.error()
                 kagisys.migration_to_default()
                 continue
             (u_id, u_name) = res
@@ -46,6 +53,8 @@ def main():
             # 追加処理
             if not res:
                 n.addUser(idm=idm, u_id=kagisys.authorization_uid)
+                # TODO: addUserが成功したらに変える
+                led_module.success()
             kagisys.migration_to_default()
 
 
@@ -53,13 +62,13 @@ if __name__ == "__main__":
     k = Kagi()
     kagisys = Kagisys()
     n = NFC_Reader()
-    # led_module = Led()
-    # display_module = OLED_Display()
+    led_module = Led()
+    display_module = OLED_Display()
     s = Slack()
 
     k.attach(s)
-    # k.attach(led_module)
-    # k.attach(display_module)
+    k.attach(led_module)
+    kagisys.attach(display_module)
 
     # GPIO Button Interrupt
     GPIO.setmode(GPIO.BCM)
