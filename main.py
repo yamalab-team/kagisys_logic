@@ -7,7 +7,7 @@ class Kagisys(Observer):
     _DEFAULT = "defalut"
     _AUTHORIZE = "auhorize"
     _ADDNEWUSER = "addnewuser"
-    MODE = __DEFAULT 
+    MODE = _DEFAULT 
     def __init__(self):
         super().__init__()
     
