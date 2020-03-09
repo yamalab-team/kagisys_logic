@@ -1,4 +1,6 @@
 import nfc
+import sys
+import signal
 import binascii
 
 from .db import DataBase
@@ -10,6 +12,13 @@ class NFC_Reader:
         # self.clf = nfc.ContactlessFrontend("usb")
         self.target_req = nfc.clf.RemoteTarget("212F") # NFC Type:Felica
         self.target_req.sensf_req = bytearray.fromhex("0000030000")
+        signal.signal(signal.SIGINT, self.exit_handler)
+    
+    def exit_handler(self, signal, frame):
+		"""終了時処理"""
+		print('Exit nfc')
+		self.clf.close()
+		sys.exit(0)
         
     def recognition(self):
         target_res = self.clf.sense(self.target_req, iterations=10, interval=0.1)
