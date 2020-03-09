@@ -110,8 +110,9 @@ class OLED_Display:
 		# font = ImageFont.truetype('Minecraftia.ttf', 8)
 		self.cmd = "hostname -I | cut -d\' \' -f1"
 		self.IP = subprocess.check_output(self.cmd, shell=True)
+		self.IP = self.IP.decode("utf-8")
 		self.draw.text((self.x, self.top), "IP: " +
-					   str(self.IP),  font=self.fontE, fill=255)
+					   self.IP,  font=self.fontE, fill=255)
 		self.disp.image(self.image)
 		self.disp.display()
 
@@ -119,7 +120,7 @@ class OLED_Display:
 	def display(self, texts, fonts):
 		draw = ImageDraw.Draw(self.image)
 		draw.rectangle((0, 0, self.width, self.height), outline=0, fill=0)
-		draw.text((self.x, self.top), "IP: " + str(self.IP), font=self.fontE, fill=255)
+		draw.text((self.x, self.top), "IP: " + self.IP, font=self.fontE, fill=255)
 		self.max = min(len(texts), 2)
 		ichi = self.top+8
 		for i in range(self.max):
@@ -139,7 +140,7 @@ class OLED_Display:
 	def clear(self):
 		self.disp.clear()
 		self.disp.display()
-		self.draw.text((self.x, self.top), "IP: " + str(self.IP),  font=self.fontE, fill=255)
+		self.draw.text((self.x, self.top), "IP: " + self.IP,  font=self.fontE, fill=255)
 		self.disp.image(self.image)
 		self.disp.display()
 
