@@ -127,7 +127,7 @@ class OLED_Display:
 				font = self.fontJ
 			else:
 				font = self.fontE
-			s = texts[i].decode('utf-8')
+			s = texts[i]
 			draw.text((self.x, ichi), s, font=font, fill=255)
 			if(fonts[i] == "ja"):
 				ichi = ichi+12
