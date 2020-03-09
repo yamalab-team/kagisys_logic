@@ -14,10 +14,13 @@ class NFC_Reader:
 		self.target_req.sensf_req = bytearray.fromhex("0000030000")
 		signal.signal(signal.SIGINT, self.exit_handler)
 	
+	def __del__(self):
+		print("del nfc")
+		self.clf.close()
+
 	def exit_handler(self, **arg):
 		print('Exit nfc')
 		self.clf.close()
-		sys.exit(0)
 		
 	def recognition(self):
 		target_res = self.clf.sense(self.target_req, iterations=10, interval=0.1)
