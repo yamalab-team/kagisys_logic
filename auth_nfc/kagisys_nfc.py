@@ -17,9 +17,11 @@ class NFC_Reader:
             return None
         tag = nfc.tag.activate(self.clf,target_res)
         tag.sys = 3
-        idm = binascii.hexlify(tag.idm)
-        print(idm.decode("utf-8"))
-        return idm.decode("utf-8")
+        idm_byte = binascii.hexlify(tag.idm)
+        idm = idm_byte.decode("utf-8")
+        self.db.addTouchedLog(idm)
+        print(idm)
+        return idm
 
     def authorization(self, idm):
         # db check idm

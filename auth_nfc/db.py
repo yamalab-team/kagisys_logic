@@ -60,7 +60,7 @@ class DataBase:
 		conn.close()
 
 	def addTouchedLog(self, IDm):
-		now = time.time()
+		time_stamp = time.strftime('%Y-%m-%d %H:%M:%S')
 		conn = self.__open()
 		cursor = conn.cursor()
 		cursor.execute('insert into touchedlog VALUES (%s, %s)',(IDm, now))
