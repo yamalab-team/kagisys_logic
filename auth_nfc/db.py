@@ -12,7 +12,7 @@ class DataBase:
 		print("db", current)
 		# get url from kagisys.conf
 		self.config = configparser.SafeConfigParser()
-		self.config.read(current / "conf/kagisys.config")
+		self.config.read(str(current / "conf/kagisys.config"))
 
 	def __open(self):
 		try:

@@ -9,7 +9,7 @@ class Slack:
         current = Path().resolve()
         print("slack", current)
         config = configparser.SafeConfigParser()
-        config.read(current / "conf/kagisys.config")
+        config.read(str(current / "conf/kagisys.config"))
         self.url = config.get("Slack", "url")
 
     def update(self, kagi):
