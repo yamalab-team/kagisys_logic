@@ -16,7 +16,7 @@ class Led():
 		GPIO.setup(self.OPENs, GPIO.OUT)
 		GPIO.setup(self.LOCKs, GPIO.OUT)
 
-	def exit_handler(self):
+	def exit_handler(self, **arg):
 		"""Exit handler."""
 		GPIO.cleanup()
 

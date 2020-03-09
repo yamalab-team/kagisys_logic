@@ -19,7 +19,7 @@ class Servo():
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(12, GPIO.OUT)
 
-    def exit_handler(self):
+    def exit_handler(self, **arg):
         """Exit handler."""
         print("Exit motor")
         GPIO.cleanup()

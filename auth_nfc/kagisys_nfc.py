@@ -14,7 +14,7 @@ class NFC_Reader:
 		self.target_req.sensf_req = bytearray.fromhex("0000030000")
 		signal.signal(signal.SIGINT, self.exit_handler)
 	
-	def exit_handler(self, signal, frame):
+	def exit_handler(self, **arg):
 		print('Exit nfc')
 		self.clf.close()
 		sys.exit(0)
