@@ -39,7 +39,7 @@ class Led():
 			self.lock()
 	
 	def error(self):
-		isOpen = (GPIO.input(self.OPENs) == 1)
+		isOpen = (GPIO.input(self.OPENs[0]) == 1)
 		self.off()
 		for i in range(8):
 			if(i%2==0):
@@ -54,7 +54,7 @@ class Led():
 			self.lock()
 	
 	def success(self):
-		isOpen = (GPIO.input(self.OPENs) == 1)
+		isOpen = (GPIO.input(self.OPENs[0]) == 1)
 		self.off()
 		for i in range(8):
 			if(i%2==0):
