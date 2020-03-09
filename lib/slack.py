@@ -2,15 +2,14 @@
 import requests
 import json
 import configparser
-# from pathlib import Path
+from pathlib import Path
 
 class Slack:
     def __init__(self):
-        # current = Path().resolve()
+        current = Path().resolve()
         print("slack", current)
         config = configparser.SafeConfigParser()
-        # config.read(current / "conf/kagisys.config")
-        self.config.read("/home/pi/project/kagisys_logic/conf/kagisys.config")
+        config.read(current / "conf/kagisys.config")
         self.url = config.get("Slack", "url")
 
     def update(self, kagi):

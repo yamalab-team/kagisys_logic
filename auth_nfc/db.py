@@ -4,16 +4,15 @@
 import configparser
 import time
 import mysql.connector
-# from pathlib import Path
+from pathlib import Path
 
 class DataBase:
 	def __init__(self):
-		# current = Path().resolve()
+		current = Path().resolve()
 		print("db", current)
 		# get url from kagisys.conf
 		self.config = configparser.SafeConfigParser()
-		# self.config.read(current / "conf/kagisys.config")
-		self.config.read("/home/pi/project/kagisys_logic/conf/kagisys.config")
+		self.config.read(current / "conf/kagisys.config")
 
 	def __open(self):
 		try:
