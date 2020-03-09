@@ -72,9 +72,9 @@ if __name__ == "__main__":
 
     # GPIO Button Interrupt
     GPIO.setmode(GPIO.BCM)
-    B_lock     = 0
-    B_open     = 0
-    B_register = 0
+    B_lock     = 26
+    B_open     = 19
+    B_register = 20
     GPIO.setup(B_lock, GPIO.IN)
     GPIO.setup(B_open, GPIO.IN)
     GPIO.setup(B_register, GPIO.IN)
