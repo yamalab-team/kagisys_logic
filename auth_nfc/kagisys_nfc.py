@@ -15,7 +15,6 @@ class NFC_Reader:
         signal.signal(signal.SIGINT, self.exit_handler)
     
     def exit_handler(self, signal, frame):
-		"""終了時処理"""
 		print('Exit nfc')
 		self.clf.close()
 		sys.exit(0)
