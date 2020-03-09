@@ -144,9 +144,9 @@ class OLED_Display:
 		self.disp.display()
 
 	def update(self, kagisys):
-		if kagisys.MODE == kagisys.__DEFAULT:
+		if kagisys.MODE == kagisys._DEFAULT:
 			self.display([kagisys.MODE], ["en"])
-		elif kagisys.MODE == kagisys.__AUTHORIZE:
+		elif kagisys.MODE == kagisys._AUTHORIZE:
 			self.display([kagisys.MODE, "登録済みカードをタッチ"], ["en", "ja"])
-		elif kagisys.MODE == kagisys.__ADDNEWUSER:
+		elif kagisys.MODE == kagisys._ADDNEWUSER:
 			self.display([kagisys.MODE, "登録するカードをタッチ"], ["en", "ja"])

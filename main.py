@@ -11,7 +11,7 @@ class Kagisys(Observer):
     def __init__(self):
         super().__init__()
     
-    def migration_to_authorization(self):
+    def migration_to_authorization(self, gpio):
         self.MODE = self._AUTHORIZE
         self.notify()
     def migration_to_adduser(self, u_id):

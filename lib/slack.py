@@ -14,7 +14,7 @@ class Slack:
 
     def update(self, kagi):
         msg = ""
-        if kagi.currentName:
+        if type(kagi.currentName) == str:
             # msg = f"<@{kagi.currentSlackId}>が"
             msg = kagi.currentName + "が"
         if kagi.isOpen:
