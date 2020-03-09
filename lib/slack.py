@@ -16,7 +16,7 @@ class Slack:
         msg = ""
         if kagi.currentName:
             # msg = f"<@{kagi.currentSlackId}>が"
-            msg = "{kagi.currentName}が"
+            msg = f"{kagi.currentName}が"
         if kagi.isOpen:
             msg += "開けました"
             self.post(msg)
