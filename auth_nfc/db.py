@@ -63,7 +63,7 @@ class DataBase:
 		time_stamp = time.strftime('%Y-%m-%d %H:%M:%S')
 		conn = self.__open()
 		cursor = conn.cursor()
-		cursor.execute('insert into touchedlog VALUES (%s, %s)',(IDm, now))
+		cursor.execute('insert into touchedlog VALUES (%s, %s)',(IDm, time_stamp))
 		conn.commit()
 		cursor.close()
 		conn.close()
