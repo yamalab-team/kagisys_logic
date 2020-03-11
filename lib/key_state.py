@@ -23,22 +23,22 @@ class Kagi(Observer):
 	def __init__(self):
 		super().__init__()
 		self.isOpen = False
-		self.currentSlackId = None
+		self.currentName = None
 		# 鍵の状態が変わったときに通知する
 		self.attach(Servo())
 
-	def open(self, slackid=None):
+	def open(self, u_name=None):
 		if self.isOpen:
 			return
-		self.currentSlackId = slackid
+		self.currentName = u_name
 		self.isOpen = True
 		self.notify()
 		
 	
-	def lock(self, slackid=None):
+	def lock(self, u_name=None):
 		if not self.isOpen:
 			return
-		self.currentSlackId = slackid
+		self.currentName = u_name
 		self.isOpen = False
 		self.notify()
 

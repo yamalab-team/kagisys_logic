@@ -12,7 +12,7 @@ class DataBase:
 		print("db", current)
 		# get url from kagisys.conf
 		self.config = configparser.SafeConfigParser()
-		self.config.read(current / "conf/kagisys.config")
+		self.config.read(str(current / "conf/kagisys.config"))
 
 	def __open(self):
 		try:
@@ -40,7 +40,7 @@ class DataBase:
 			conn.close()
 			return True
 
-	def getUsername(self, IDm):
+	def getUserId(self, IDm):
 		conn = self.__open()
 		cursor = conn.cursor()
 		cursor.execute("select userid from Nfctags where idm=%s", (IDm,))
@@ -50,18 +50,20 @@ class DataBase:
 		return result[0][0]
 
 	def addNewIDm(self, IDm, account_id):
+		userid = account_id
+		idm = IDm
 		conn = self.__open()
 		cursor = conn.cursor()
-		cursor.execute('insert into nfctag VALUES (%s, %s)',(IDm, account_id))
+		cursor.execute('insert into Nfctags VALUES (%s, %s)',(idm, userid))
 		conn.commit()
 		cursor.close()
 		conn.close()
 
 	def addTouchedLog(self, IDm):
-		now = time.time()
+		time_stamp = time.strftime('%Y-%m-%d %H:%M:%S')
 		conn = self.__open()
 		cursor = conn.cursor()
-		cursor.execute('insert into touchedlog VALUES (%s, %s)',(IDm, now))
+		cursor.execute('insert into touchedlog VALUES (%s, %s)',(IDm, time_stamp))
 		conn.commit()
 		cursor.close()
 		conn.close()
@@ -70,6 +72,15 @@ class DataBase:
 		conn = self.__open()
 		cursor = conn.cursor()
 		cursor.execute("select slackid from Users where userid=%s", (userid,))
+		result = cursor.fetchall()
+		cursor.close()
+		conn.close()
+		return result[0][0]
+
+	def getUserName(self, userid):
+		conn = self.__open()
+		cursor = conn.cursor()
+		cursor.execute("select username from Users where userid=%s", (userid,))
 		result = cursor.fetchall()
 		cursor.close()
 		conn.close()

@@ -9,13 +9,14 @@ class Slack:
         current = Path().resolve()
         print("slack", current)
         config = configparser.SafeConfigParser()
-        config.read(current / "conf/kagisys.config")
+        config.read(str(current / "conf/kagisys.config"))
         self.url = config.get("Slack", "url")
 
     def update(self, kagi):
         msg = ""
-        if kagi.currentSlackId:
-            msg = f"<@{kagi.currentSlackId}>が"
+        if type(kagi.currentName) == str:
+            # msg = f"<@{kagi.currentSlackId}>が"
+            msg = kagi.currentName + "が"
         if kagi.isOpen:
             msg += "開けました"
             self.post(msg)
